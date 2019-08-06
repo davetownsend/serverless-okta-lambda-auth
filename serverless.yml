@@ -1,0 +1,41 @@
+service: example-service
+
+frameworkVersion: '>=1.49.0 <2.0.0'
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: nodejs8.10
+  stage: dev
+  apiname: example
+  
+plugins:
+  - serverless-pseudo-parameters
+  - serverless-iam-roles-per-function
+
+functions:
+  auth:
+    handler: exampleAuth.verify
+    iamRoleStatementsName: ${self:provider.apiname}-exampleAuth-verify-lambda-role
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - ssm:GetParameters*
+        Resource: 
+          - "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${self:provider.apiname}/${self:provider.stage}/okta/"
+    # - Effect: 'Allow'
+    #   Action: 'kms:Decrypt'
+    #   Resource: 
+        # - 'arn:aws:kms:us-west-2:#{AWS::AccountId}:key/{key...}'
+  exampleData:
+    handler: example.getExample
+    events:
+      - http:
+          path: /${self:provider.apiname}/read
+          method: get
+          authorizer:
+            name: auth
+            identitySource: method.request.header.Authorization
+            identityValidationExpression: ^Bearer [-0-9a-zA-z\.]*$
+            resultTtlInSeconds: 0
+          cors: true

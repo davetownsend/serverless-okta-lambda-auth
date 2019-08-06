@@ -1,0 +1,14 @@
+{
+  "name": "serverless-okta-lambda-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@okta/jwt-verifier": "^1.0.0",
+    "middy": "^0.28.4",
+    "serverless-iam-roles-per-function": "^1.0.4",
+    "serverless-pseudo-parameters": "^2.4.0"
+  },
+  "author": "@davetownsend",
+  "license": "MIT"
+}
