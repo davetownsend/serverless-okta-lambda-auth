@@ -4,6 +4,7 @@ const middy = require("middy");
 const { ssm } = require("middy/middlewares");
 
 const { STAGE: stage } = process.env;
+
 let oktaJwtVerifier = {};
 
 const setOktaVerificationParams = context => {
@@ -44,8 +45,8 @@ const verify = (event, context, cb) => {
       }
 
       let policy = new AuthPolicy(claims.sub, awsAccountId, apiOptions);
-      policy.allowMethod(AuthPolicy.HttpVerb.GET, "/example");
-      //console.log(JSON.stringify(policy.build()));
+      policy.allowMethod(AuthPolicy.HttpVerb.GET, "/example/read");
+      console.log(JSON.stringify(policy.build()));
       return cb(null, policy.build());
     })
     .catch(err => {

@@ -6,7 +6,9 @@ provider:
   name: aws
   region: us-west-2
   runtime: nodejs8.10
-  stage: dev
+  stage: ${opt:stage}
+  environment: 
+    STAGE: ${self:provider.stage}
   apiname: example
   
 plugins:
@@ -19,14 +21,11 @@ functions:
     iamRoleStatementsName: ${self:provider.apiname}-exampleAuth-verify-lambda-role
     iamRoleStatements:
       - Effect: Allow
-        Action:
-          - ssm:GetParameters*
-        Resource: 
-          - "arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${self:provider.apiname}/${self:provider.stage}/okta/"
-    # - Effect: 'Allow'
-    #   Action: 'kms:Decrypt'
-    #   Resource: 
-        # - 'arn:aws:kms:us-west-2:#{AWS::AccountId}:key/{key...}'
+        Action: ssm:GetParameters*
+        Resource: arn:aws:ssm:#{AWS::Region}:#{AWS::AccountId}:parameter/${self:provider.apiname}/${self:provider.stage}/okta/*
+      - Effect: 'Allow'
+        Action: 'kms:Decrypt'
+        Resource: arn:aws:kms:#{AWS::Region}:#{AWS::AccountId}:key/${ssm:/example/${self:provider.stage}/kms/keyid~true}
   exampleData:
     handler: example.getExample
     events:

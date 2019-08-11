@@ -5,7 +5,6 @@ module.exports.getExample = async event => {
       body: JSON.stringify({ message: "Welcome! You are in!" })
     };
   } catch (err) {
-    console.error(`Error: ${err}`);
     return new Error("Error");
   }
 };
