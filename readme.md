@@ -1,6 +1,7 @@
 # Securing API Gateway with Okta, Serverless Framework and SSM
 
-Accompanying blog post: https://medium.com/@dave_townsend/securing-api-gateway-with-okta-serverless-framework-and-ssm-9e679af614e2
+Accompanying blog post:
+https://unbounded.io/securing-api-gateway-with-okta-serverless-framework-and-ssm-9e679af614e2
 
 ## Create the SSM params
 
