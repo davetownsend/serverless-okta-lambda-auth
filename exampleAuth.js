@@ -8,6 +8,8 @@ const { STAGE: stage } = process.env;
 let oktaJwtVerifier = {};
 
 const setOktaVerificationParams = context => {
+  // check for empty verifier obj to allow for default cliet side caching
+  if (Object.keys(oktaJwtVerifier).length == 0) {
   const { ISSUER: issuer, CLIENT_ID: clientId } = context;
   oktaJwtVerifier = new OktaJwtVerifier({
     issuer: issuer,
